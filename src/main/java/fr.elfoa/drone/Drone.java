@@ -38,9 +38,15 @@ public class Drone {
             return;
         }
 
-        Integer weight = containers.stream()
-                                   .mapToInt(Container::getWeight)
-                                   .sum();
+        Integer weight;
+
+        try {
+            weight = containers.stream()
+                    .mapToInt(Container::getWeight)
+                    .sum();
+        } catch (NullPointerException e) {
+            weight = 0;
+        }
 
         propellers.start();
 
@@ -82,9 +88,16 @@ public class Drone {
     }
 
     public boolean isCanFly(){
-        Integer weight = containers.stream()
-                                   .mapToInt(Container::getWeight)
-                                   .sum();
+
+        Integer weight;
+
+        try {
+            weight = containers.stream()
+                    .mapToInt(Container::getWeight)
+                    .sum();
+        } catch (NullPointerException e) {
+            weight = 0;
+        }
 
         return weight == 0 || (weight / propellers.getNumberOfPropelle() * 5) != 0;
     }

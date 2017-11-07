@@ -1,6 +1,6 @@
 package fr.elfoa.drone;
 
-import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,26 +9,23 @@ import java.util.List;
  */
 public class Drone {
 
-    @Inject
     private Battery battery;
 
     private Propellers propellers;
 
-    @Inject
     private List<Container> containers;
 
-    @Inject
     private ConsumptionCalculator consumptionCalculator = new ConsumptionCalculator();
 
-    @Inject
     private Point current;
 
     private Boolean isFlying;
 
 
     public Drone(Point current){
+        this.containers = new ArrayList<>();
         this.current = current;
-        //this.battery = new Battery();
+        this.battery = new Battery();
         this.propellers = new Propellers(battery);
 
         if(current.getAltitude() != 0){
@@ -77,6 +74,7 @@ public class Drone {
 
         battery.use(consumptionCalculator.getConsumption(distance,Direction.HORIZONTAL,weight));
 
+        current = point;
     }
 
     public void landing(){
